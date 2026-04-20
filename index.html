@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gwenaël — Développeur Full-Stack · Bretagne</title>
+<meta name="description" content="Gwenaël, développeur full-stack en Bretagne. Next.js, NestJS, TypeScript, React Native. Freelance et missions ponctuelles.">
+<meta name="author" content="Gwenaël">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Gwenaël — Développeur Full-Stack">
+<meta property="og:description" content="Développeur full-stack en Bretagne. Next.js, NestJS, React Native.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #f7f5f0;
+  --bg-alt: #efece4;
+  --ink: #1a1a1a;
+  --ink-soft: #4a4a48;
+  --ink-faint: #8a8884;
+  --accent: #c4452d;
+  --line: #d9d4c7;
+  --display: 'Fraunces', Georgia, serif;
+  --mono: 'JetBrains Mono', monospace;
+  --body: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Subtle grain texture */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.04;
+  z-index: 100;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* ─── NAV ─── */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 24px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 50;
+  backdrop-filter: blur(8px);
+  background: rgba(247, 245, 240, 0.7);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s;
+}
+
+nav.scrolled { border-bottom-color: var(--line); }
+
+.logo {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+}
+
+.logo em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+  font-family: var(--mono);
+  font-size: 13px;
+}
+
+.nav-links a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover { color: var(--accent); }
+
+@media (max-width: 640px) {
+  .nav-links { display: none; }
+}
+
+/* ─── HERO ─── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 120px 0 80px;
+  position: relative;
+}
+
+.hero-meta {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink-faint);
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.1s forwards;
+}
+
+.hero-meta .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4ade80;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.hero h1 {
+  font-family: var(--display);
+  font-size: clamp(48px, 8vw, 104px);
+  font-weight: 300;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  margin-bottom: 40px;
+  opacity: 0;
+  animation: fadeUp 1s 0.2s forwards;
+}
+
+.hero h1 em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent);
+}
+
+.hero-sub {
+  max-width: 620px;
+  font-size: 19px;
+  color: var(--ink-soft);
+  margin-bottom: 48px;
+  line-height: 1.55;
+  opacity: 0;
+  animation: fadeUp 1s 0.4s forwards;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp 1s 0.6s forwards;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 24px;
+  font-family: var(--mono);
+  font-size: 14px;
+  text-decoration: none;
+  border-radius: 2px;
+  transition: all 0.25s;
+  border: 1px solid transparent;
+}
+
+.btn-primary {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.btn-primary:hover {
+  background: var(--accent);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.btn-secondary:hover {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.btn .arrow {
+  display: inline-block;
+  transition: transform 0.25s;
+}
+
+.btn:hover .arrow { transform: translateX(4px); }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Decorative side */
+.hero-deco {
+  position: absolute;
+  top: 50%;
+  right: 40px;
+  transform: translateY(-50%) rotate(90deg);
+  transform-origin: right center;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  letter-spacing: 0.2em;
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) { .hero-deco { display: none; } }
+
+/* ─── SECTIONS ─── */
+section {
+  padding: 100px 0;
+  border-top: 1px solid var(--line);
+}
+
+.section-label {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-family: var(--display);
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin-bottom: 48px;
+  max-width: 800px;
+}
+
+.section-title em {
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* ─── À PROPOS ─── */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+}
+
+@media (max-width: 768px) {
+  .about-grid { grid-template-columns: 1fr; gap: 40px; }
+}
+
+.about-text p {
+  color: var(--ink-soft);
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.about-text p strong {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.about-facts {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.fact {
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+}
+
+.fact:last-child { border-bottom: none; }
+
+.fact-label {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+}
+
+.fact-value {
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 400;
+}
+
+/* ─── STACK ─── */
+.stack-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+@media (max-width: 768px) { .stack-grid { grid-template-columns: repeat(2, 1fr); } }
+
+.stack-item {
+  background: var(--bg);
+  padding: 32px 24px;
+  transition: background 0.25s;
+}
+
+.stack-item:hover { background: var(--bg-alt); }
+
+.stack-category {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 16px;
+}
+
+.stack-techs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stack-tech {
+  font-family: var(--display);
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* ─── PROJETS ─── */
+.projects {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.project {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  gap: 32px;
+  padding: 32px 0;
+  border-top: 1px solid var(--line);
+  align-items: center;
+  text-decoration: none;
+  color: var(--ink);
+  transition: padding 0.3s;
+}
+
+.project:last-child { border-bottom: 1px solid var(--line); }
+
+.project:hover {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.project:hover .project-title { color: var(--accent); }
+.project:hover .project-arrow { transform: translateX(8px); color: var(--accent); }
+
+.project-num {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink-faint);
+}
+
+.project-body h3 {
+  font-family: var(--display);
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+  transition: color 0.25s;
+}
+
+.project-body p {
+  color: var(--ink-soft);
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.project-tags {
+  display: flex;
+  gap: 12px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-faint);
+}
+
+.project-arrow {
+  font-family: var(--display);
+  font-size: 28px;
+  color: var(--ink-faint);
+  transition: all 0.25s;
+}
+
+@media (max-width: 768px) {
+  .project { grid-template-columns: 1fr; gap: 8px; }
+  .project-num { font-size: 11px; }
+  .project-arrow { display: none; }
+}
+
+/* ─── CONTACT ─── */
+#contact {
+  background: var(--bg-alt);
+  border-top: 1px solid var(--line);
+}
+
+.contact-title {
+  font-family: var(--display);
+  font-size: clamp(48px, 7vw, 80px);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  margin-bottom: 48px;
+}
+
+.contact-title em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.contact-methods {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+}
+
+@media (max-width: 640px) { .contact-methods { grid-template-columns: 1fr; } }
+
+.contact-card {
+  padding: 28px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  text-decoration: none;
+  color: var(--ink);
+  transition: all 0.25s;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.contact-card:hover {
+  border-color: var(--ink);
+  transform: translateY(-3px);
+}
+
+.contact-label {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.contact-value {
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* ─── FOOTER ─── */
+footer {
+  padding: 40px 0;
+  border-top: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-faint);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+footer .container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  width: 100%;
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="logo">gwen<em>.</em>dev</div>
+  <ul class="nav-links">
+    <li><a href="#about">à propos</a></li>
+    <li><a href="#stack">stack</a></li>
+    <li><a href="#projects">projets</a></li>
+    <li><a href="#contact">contact</a></li>
+  </ul>
+</nav>
+
+<!-- ─── HERO ─── -->
+<header class="hero">
+  <div class="container">
+    <div class="hero-meta">
+      <span class="dot"></span>
+      <span>DISPONIBLE — BRETAGNE, FR</span>
+    </div>
+    <h1>Développeur<br>full-stack<br><em>& artisan</em> du web.</h1>
+    <p class="hero-sub">
+      Je conçois des applications web et mobiles sur-mesure —
+      du backend API robuste aux interfaces soignées.
+      Basé à Loudéac, je travaille avec des équipes en France et à distance.
+    </p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn btn-primary">Me contacter <span class="arrow">→</span></a>
+      <a href="#projects" class="btn btn-secondary">Voir les projets</a>
+    </div>
+  </div>
+  <div class="hero-deco">FREELANCE / CDI / MISSIONS</div>
+</header>
+
+<!-- ─── À PROPOS ─── -->
+<section id="about">
+  <div class="container">
+    <div class="section-label">01 — À propos</div>
+    <h2 class="section-title">Du code <em>propre</em>, des interfaces <em>soignées</em>, des projets qui tiennent.</h2>
+
+    <div class="about-grid">
+      <div class="about-text">
+        <p>Je suis <strong>Gwenaël</strong>, développeur full-stack basé en Bretagne. Je travaille principalement sur des <strong>CRM et outils métier</strong> en Next.js/TypeScript côté front, et NestJS côté back — avec intégration à des ERP et systèmes legacy.</p>
+        <p>Je construis aussi des <strong>applications mobiles</strong> en React Native/Expo, et j'aime les projets où il faut résoudre des vrais problèmes, pas juste pousser des pixels.</p>
+        <p>Ma philosophie : <strong>solutions minimales, code maintenable, zéro dette technique inutile</strong>. Et toujours résoudre le problème à la racine.</p>
+      </div>
+      <div class="about-facts">
+        <div class="fact">
+          <div class="fact-label">Localisation</div>
+          <div class="fact-value">Loudéac, Bretagne</div>
+        </div>
+        <div class="fact">
+          <div class="fact-label">Spécialités</div>
+          <div class="fact-value">Full-stack · Mobile · ERP</div>
+        </div>
+        <div class="fact">
+          <div class="fact-label">Langues</div>
+          <div class="fact-value">Français · English</div>
+        </div>
+        <div class="fact">
+          <div class="fact-label">Disponibilité</div>
+          <div class="fact-value">Freelance & missions</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── STACK ─── -->
+<section id="stack">
+  <div class="container">
+    <div class="section-label">02 — Stack technique</div>
+    <h2 class="section-title">Les outils avec lesquels je <em>construis</em>.</h2>
+
+    <div class="stack-grid">
+      <div class="stack-item">
+        <div class="stack-category">Frontend</div>
+        <div class="stack-techs">
+          <span class="stack-tech">Next.js</span>
+          <span class="stack-tech">React</span>
+          <span class="stack-tech">TypeScript</span>
+          <span class="stack-tech">Ant Design</span>
+        </div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-category">Backend</div>
+        <div class="stack-techs">
+          <span class="stack-tech">NestJS</span>
+          <span class="stack-tech">Node.js</span>
+          <span class="stack-tech">PostgreSQL</span>
+          <span class="stack-tech">REST API</span>
+        </div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-category">Mobile</div>
+        <div class="stack-techs">
+          <span class="stack-tech">React Native</span>
+          <span class="stack-tech">Expo</span>
+          <span class="stack-tech">Supabase</span>
+        </div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-category">Outils</div>
+        <div class="stack-techs">
+          <span class="stack-tech">Git / GitLab</span>
+          <span class="stack-tech">VS Code</span>
+          <span class="stack-tech">Claude Code</span>
+          <span class="stack-tech">Docker</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PROJETS ─── -->
+<section id="projects">
+  <div class="container">
+    <div class="section-label">03 — Projets</div>
+    <h2 class="section-title">Une sélection de <em>ce que je fais</em>.</h2>
+
+    <div class="projects">
+      <a href="https://github.com/Gwenaelcdn/monsuiviauto-legal" class="project" target="_blank" rel="noopener">
+        <div class="project-num">/ 01</div>
+        <div class="project-body">
+          <h3>AutoCompanion</h3>
+          <p>Application mobile de suivi d'entretien automobile. Expo/React Native, Supabase, OAuth Google.</p>
+          <div class="project-tags"><span>React Native</span><span>Expo</span><span>Supabase</span></div>
+        </div>
+        <div class="project-arrow">→</div>
+      </a>
+
+      <a href="https://github.com/Gwenaelcdn/clevertest" class="project" target="_blank" rel="noopener">
+        <div class="project-num">/ 02</div>
+        <div class="project-body">
+          <h3>CRM & Outils métier</h3>
+          <p>Applications Next.js connectées à des ERP (Divalto, Panoramix). Tasks, commandes, tickets, tournées de livraison.</p>
+          <div class="project-tags"><span>Next.js</span><span>TypeScript</span><span>NestJS</span></div>
+        </div>
+        <div class="project-arrow">→</div>
+      </a>
+
+      <a href="https://github.com/Gwenaelcdn/demo-nodejs-mongodb-rest" class="project" target="_blank" rel="noopener">
+        <div class="project-num">/ 03</div>
+        <div class="project-body">
+          <h3>API Node.js / MongoDB</h3>
+          <p>Démo d'API REST Node.js avec MongoDB, déployée sur Clever Cloud. Architecture simple et scalable.</p>
+          <div class="project-tags"><span>Node.js</span><span>MongoDB</span><span>REST</span></div>
+        </div>
+        <div class="project-arrow">→</div>
+      </a>
+
+      <a href="https://github.com/Gwenaelcdn" class="project" target="_blank" rel="noopener">
+        <div class="project-num">/ +</div>
+        <div class="project-body">
+          <h3>Voir tout sur GitHub</h3>
+          <p>L'ensemble de mes dépôts publics, expérimentations et forks.</p>
+          <div class="project-tags"><span>@Gwenaelcdn</span></div>
+        </div>
+        <div class="project-arrow">→</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONTACT ─── -->
+<section id="contact">
+  <div class="container">
+    <div class="section-label">04 — Contact</div>
+    <h2 class="contact-title">Un projet en tête&nbsp;? <em>Parlons-en.</em></h2>
+    <p style="max-width: 600px; color: var(--ink-soft); font-size: 18px;">
+      Disponible pour des missions freelance, des CDI ou des collaborations ponctuelles.
+      Je réponds en général sous 24h.
+    </p>
+
+    <div class="contact-methods">
+      <a href="mailto:contact@gwendev.fr" class="contact-card">
+        <span class="contact-label">Email</span>
+        <span class="contact-value">contact@gwendev.fr</span>
+      </a>
+      <a href="https://github.com/Gwenaelcdn" target="_blank" rel="noopener" class="contact-card">
+        <span class="contact-label">GitHub</span>
+        <span class="contact-value">@Gwenaelcdn</span>
+      </a>
+      <a href="https://www.linkedin.com/" target="_blank" rel="noopener" class="contact-card">
+        <span class="contact-label">LinkedIn</span>
+        <span class="contact-value">Gwenaël →</span>
+      </a>
+      <a href="#" class="contact-card">
+        <span class="contact-label">Localisation</span>
+        <span class="contact-value">Bretagne, FR</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="container">
+    <span>© 2026 — Gwendev</span>
+    <span>Fait avec soin en Bretagne 🏴󠁧󠁢󠁷󠁬󠁳󠁿</span>
+  </div>
+</footer>
+
+<script>
+  // Navigation on scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+  });
+</script>
+
+</body>
+</html>
